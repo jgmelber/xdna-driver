@@ -28,7 +28,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          apt update && apt install -y git build-essential cmake ninja-build
+          apt update && apt install -y git build-essential cmake ninja-build libdrm-dev
           ./tools/amdxdna_deps.sh
 
       - name: Build XRT
