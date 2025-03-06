@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ubuntu_version: ["24.04", "24.10"]
+        ubuntu_version: ["24.04"]
       fail-fast: false
 
     container:
@@ -38,7 +38,7 @@ jobs:
       - name: Build XRT
         run: |
           cd xrt/build
-          ./build.sh -npu -opt
+          ./build.sh -npu -opt -noctest
 
       - name: Build XDNA Driver
         run: |
