@@ -16,10 +16,15 @@ jobs:
       image: ubuntu:${{ matrix.ubuntu_version }}
 
     steps:
+      - name: Install Git
+        run: |
+          apt update && apt install -y git
+
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          submodules: recursive
+          fetch-depth: 0  # Ensures full history is fetched
+          submodules: recursive  # Properly fetch submodules
 
       - name: Install dependencies
         run: |
