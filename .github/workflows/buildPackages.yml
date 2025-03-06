@@ -1,0 +1,73 @@
+name: Build XDNA Driver and XRT Packages
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+        image: ghcr.io/jgmelber/my-xdna-builder:latest
+    strategy:
+      matrix:
+        ubuntu_version: ["24.04"]
+      fail-fast: false
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Ensures full history is fetched
+          submodules: recursive  # Properly fetch submodules
+
+      - name: Allow all git directories
+        run: git config --global --add safe.directory '*'
+
+      - name: Install HWE kit 
+        run: |
+          apt update && apt install -y --install-recommends linux-generic-hwe-24.04
+
+      - name: Install dependencies from script
+        run: |
+          apt update && apt install -y jq 
+          ./tools/amdxdna_deps.sh
+
+      - name: Get short commit hashes
+        run: |
+          echo $(uname -a)
+          echo $(cat /etc/os-release)
+          echo $(ls /lib/modules)
+          echo $(ls /usr/src)
+          echo "XDNA_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "XRT_HASH=$(cd xrt && git rev-parse --short HEAD)" >> $GITHUB_ENV
+
+      - name: Build XRT
+        run: |
+          cd xrt/build
+          ./build.sh -npu -opt
+
+      - name: Build XDNA Driver
+        run: |
+          cd build
+          ls /lib/modules
+          ./build.sh -release
+          ./build.sh -package
+
+      - name: Create package
+        run: |
+          PACKAGE_NAME="xdna_driver_xrt_${{ matrix.ubuntu_version }}_${{ env.XDNA_HASH }}_${{ env.XRT_HASH }}.tar.gz"
+          echo "Creating package: $PACKAGE_NAME"
+          
+          tar -czvf $PACKAGE_NAME xrt/build/Release/*.deb build/Release/*.deb
+          
+          echo "TARBALL_NAME=$PACKAGE_NAME" >> $GITHUB_ENV
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.TARBALL_NAME }}
+          path: ${{ env.TARBALL_NAME }}
+
