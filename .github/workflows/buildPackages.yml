@@ -28,7 +28,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          apt update && apt install -y git build-essential cmake ninja-build libdrm-dev ocl-icd-opencl-dev clinfo libboost-all-dev libncurses-dev libssl-dev
+          apt update && apt install -y git build-essential cmake ninja-build libdrm-dev ocl-icd-opencl-dev clinfo libboost-all-dev libncurses-dev libssl-dev rapidjson-dev
           ./tools/amdxdna_deps.sh
 
       - name: Build XRT
