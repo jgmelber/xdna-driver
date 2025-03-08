@@ -27,6 +27,7 @@ jobs:
 
       - name: Install dependencies from script
         run: |
+          sudo apt update && sudo apt install -y jq
           ./tools/amdxdna_deps.sh
 
       - name: Build XRT
