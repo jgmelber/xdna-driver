@@ -8,7 +8,8 @@ on:
 jobs:
   build:
     runs-on: self-hosted
-    container: ubuntu:24.04
+    container:
+      image: ghcr.io/jgmelber/my-xdna-builder:latest
     strategy:
       matrix: 
         ubuntu_version: ["24.04"]
@@ -20,10 +21,6 @@ jobs:
         with:
           fetch-depth: 0  # Ensures full history is fetched
           submodules: recursive  # Properly fetch submodules
-
-      - name: Install dependencies
-        run: |
-          apt update && apt install -y git build-essential cmake ninja-build
 
       - name: Install dependencies from script
         run: |
