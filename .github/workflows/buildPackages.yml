@@ -11,11 +11,11 @@ jobs:
     container:
       image: ghcr.io/jgmelber/my-xdna-builder:latest
     strategy:
-      matrix: 
+      matrix:
         ubuntu_version: ["24.04"]
       fail-fast: false
 
-    steps:        
+    steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -30,10 +30,20 @@ jobs:
           sudo apt update && sudo apt install -y jq
           ./tools/amdxdna_deps.sh
 
+      - name: Get Short Commit Hashes
+        run: |
+          echo "XDNA_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo "XRT_HASH=$(cd xrt && git rev-parse --short HEAD)" >> $GITHUB_ENV
+
       - name: Build XRT
         run: |
           cd xrt/build
           ./build.sh -npu -opt
+
+      - name: Install XRT
+        run: |
+          cd xrt/build/Release
+          apt install ./xrt*-base.deb
 
       - name: Build XDNA Driver
         run: |
@@ -41,16 +51,21 @@ jobs:
           ./build.sh -release
           ./build.sh -package
 
-      - name: Create tar package
+      - name: Create package
         run: |
+          PACKAGE_NAME="xdna_driver_xrt_${{ matrix.ubuntu_version }}_${{ env.XDNA_HASH }}_${{ env.XRT_HASH }}.tar.gz"
+          echo "Creating package: $PACKAGE_NAME"
+          
           cd xrt/build/Release
-          tar -czvf ../../xdna_driver_xrt_${{ matrix.ubuntu_version }}.tar.gz *.deb
+          tar -czvf ../../$PACKAGE_NAME *.deb
           cd ../../build/Release
-          tar -czzf ../../xdna_driver_xrt_${{ matrix.ubuntu_version }}.tar.gz *.deb
+          tar -czvf ../../$PACKAGE_NAME *.deb
+          
+          echo "TARBALL_NAME=$PACKAGE_NAME" >> $GITHUB_ENV
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: xdna-driver-xrt-${{ matrix.ubuntu_version }}
-          path: xdna_driver_xrt_${{ matrix.ubuntu_version }}.tar.gz
+          name: ${{ env.TARBALL_NAME }}
+          path: ${{ env.TARBALL_NAME }}
 
