@@ -51,8 +51,7 @@ jobs:
           PACKAGE_NAME="xdna_driver_xrt_${{ matrix.ubuntu_version }}_${{ env.XDNA_HASH }}_${{ env.XRT_HASH }}.tar.gz"
           echo "Creating package: $PACKAGE_NAME"
           
-          tar -czvf $PACKAGE_NAME xrt/build/Release/*.deb
-          tar -czvf $PACKAGE_NAME build/Release/*.deb
+          tar -czvf $PACKAGE_NAME xrt/build/Release/*.deb build/Release/*.deb
           
           echo "TARBALL_NAME=$PACKAGE_NAME" >> $GITHUB_ENV
 
