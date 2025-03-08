@@ -16,6 +16,12 @@ jobs:
       fail-fast: false
 
     steps:
+      - name: Authenticate with GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
+
+      - name: Pull Image
+        run: docker pull ghcr.io/jgmelber/my-xdna-builder:latest
+          
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
