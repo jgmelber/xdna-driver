@@ -258,7 +258,7 @@ void amdxdna_bo_dma_unmap(struct amdxdna_gem_obj *abo)
 
 void amdxdna_gem_dump_mm(struct amdxdna_dev *xdna)
 {
-	struct drm_printer p = drm_debug_printer(&xdna->ddev, DRM_UT_DRIVER, NULL);
+	struct drm_printer p = drm_dbg_printer(&xdna->ddev, DRM_UT_DRIVER, NULL);
 
 	drm_mm_print(&xdna->ddev.vma_offset_manager->vm_addr_space_mm, &p);
 }
