@@ -3,24 +3,17 @@ name: Build XDNA Driver and XRT Packages
 on:
   push:
     branches:
-      - actions
+      - passing
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     strategy:
-      matrix:
+      matrix: 
         ubuntu_version: ["24.04"]
       fail-fast: false
 
-    container:
-      image: ubuntu:${{ matrix.ubuntu_version }}
-
     steps:
-      - name: Install Git
-        run: |
-          apt update && apt install -y git
-
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
@@ -29,7 +22,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          apt update && apt install -y git build-essential cmake ninja-build libdrm-dev ocl-icd-opencl-dev clinfo libboost-all-dev libncurses-dev libssl-dev rapidjson-dev libelf-dev
+          apt update && apt install -y git build-essential cmake ninja-build
 
       - name: Install dependencies from script
         run: |
@@ -38,7 +31,7 @@ jobs:
       - name: Build XRT
         run: |
           cd xrt/build
-          ./build.sh -npu -opt -noctest
+          ./build.sh -npu -opt
 
       - name: Build XDNA Driver
         run: |
@@ -49,7 +42,7 @@ jobs:
       - name: Create tar package
         run: |
           cd xrt/build/Release
-          tar -czvf ../../xdna_driver_xrt_${{ matrix.ubuntu_version }}.tar.gz *base*.deb
+          tar -czvf ../../xdna_driver_xrt_${{ matrix.ubuntu_version }}.tar.gz *.deb
           cd ../../build/Release
           tar -rzf ../../xdna_driver_xrt_${{ matrix.ubuntu_version }}.tar.gz *.deb
 
