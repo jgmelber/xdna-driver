@@ -42,7 +42,7 @@ jobs:
           cd xrt/build/Release
           tar -czvf ../../xdna_driver_xrt_${{ matrix.ubuntu_version }}.tar.gz *.deb
           cd ../../build/Release
-          tar -rzf ../../xdna_driver_xrt_${{ matrix.ubuntu_version }}.tar.gz *.deb
+          tar -czzf ../../xdna_driver_xrt_${{ matrix.ubuntu_version }}.tar.gz *.deb
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
