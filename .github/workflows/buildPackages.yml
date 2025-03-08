@@ -3,7 +3,7 @@ name: Build XDNA Driver and XRT Packages
 on:
   push:
     branches:
-      - passing
+      - actions
 
 jobs:
   build:
