@@ -7,13 +7,20 @@ on:
 
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     container:
       image: ghcr.io/jgmelber/my-xdna-builder:latest
     strategy:
       matrix:
         ubuntu_version: ["24.04"]
       fail-fast: false
+    # runs-on: self-hosted
+    # container:
+    #   image: ghcr.io/jgmelber/my-xdna-builder:latest
+    # strategy:
+    #   matrix:
+    #     ubuntu_version: ["24.04"]
+    #   fail-fast: false
 
     steps:
       - name: Checkout repository
@@ -27,7 +34,7 @@ jobs:
 
       - name: Install dependencies from script
         run: |
-          apt update && apt install -y jq
+          apt update && apt install -y jq 
           ./tools/amdxdna_deps.sh
 
       - name: Get Short Commit Hashes
