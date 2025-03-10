@@ -37,6 +37,9 @@ jobs:
           apt update && apt install -y jq 
           ./tools/amdxdna_deps.sh
 
+      - name: DEBUG: Get Linux Verison
+        run: uname -a
+
       - name: Get Short Commit Hashes
         run: |
           echo "XDNA_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
