@@ -44,6 +44,7 @@ jobs:
       - name: Get short commit hashes
         run: |
           echo $(uname -a)
+          echo $(ls /usr/src)
           echo "XDNA_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           echo "XRT_HASH=$(cd xrt && git rev-parse --short HEAD)" >> $GITHUB_ENV
 
