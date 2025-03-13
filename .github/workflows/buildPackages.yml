@@ -34,7 +34,7 @@ jobs:
 
       - name: Install HWE kit 
         run: |
-          apt update && apt install --install-recommends linux-generic-hwe-24.04
+          apt update && apt install -y --install-recommends linux-generic-hwe-24.04
 
       - name: Install dependencies from script
         run: |
