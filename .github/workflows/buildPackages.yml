@@ -8,6 +8,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    container:
+        image: ghcr.io/jgmelber/my-xdna-builder:latest
     strategy:
       matrix:
         ubuntu_version: ["24.04"]
