@@ -20,6 +20,10 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/CMake/xrt.cmake)
 # version.cmake create XRT_PLUGIN_VERSION_STRING
 include(${CMAKE_CURRENT_SOURCE_DIR}/CMake/version.cmake)
 
+# Use alternate headers
+include_directories(/usr/src/linux-headers-6.11.0-19-generic)
+include_directories(/usr/src/linux-hwe-6.11-headers-6.11.0-19)
+
 # For saving all built artifacts for quick testing purpose
 # Should be redirected/prefixed by DESTDIR in make command line
 # Can only be used with cmake install() command
