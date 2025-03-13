@@ -8,8 +8,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: ghcr.io/jgmelber/my-xdna-builder:latest
     strategy:
       matrix:
         ubuntu_version: ["24.04"]
@@ -29,18 +27,21 @@ jobs:
           fetch-depth: 0  # Ensures full history is fetched
           submodules: recursive  # Properly fetch submodules
 
-      - name: Allow All Git Directories
+      - name: Allow all git directories
         run: git config --global --add safe.directory '*'
+
+      - name: Install HWE kit 
+        run: |
+          apt update && apt install --install-recommends linux-generic-hwe-24.04
 
       - name: Install dependencies from script
         run: |
           apt update && apt install -y jq 
           ./tools/amdxdna_deps.sh
 
-      - name: Get Short Commit Hashes
+      - name: Get short commit hashes
         run: |
-          echo "LINUX_VERSION=$(uname -a)"
-          echo $LINUX_VERSION
+          echo $(uname -a)
           echo "XDNA_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
           echo "XRT_HASH=$(cd xrt && git rev-parse --short HEAD)" >> $GITHUB_ENV
 
