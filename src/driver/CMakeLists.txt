@@ -1,6 +1,9 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (C) 2022-2023, Advanced Micro Devices, Inc. All rights reserved.
 
+# Use headers from Ubuntu 24.04 HWE kit kernel install
+set(KERNEL_VER KERNEL_VER=6.11.0)
+
 set(XDNA_DRV amdxdna)
 
 set(XDNA_DRV_DIR amdxdna)
