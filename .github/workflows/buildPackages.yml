@@ -1,6 +1,7 @@
 name: Build XDNA Driver and XRT Packages
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - actions
