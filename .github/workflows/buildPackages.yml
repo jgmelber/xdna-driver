@@ -56,6 +56,7 @@ jobs:
       - name: Build XDNA Driver
         run: |
           cd build
+          ls /lib/modules
           ./build.sh -release
           ./build.sh -package
 
