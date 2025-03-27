@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - actions
+      - main
 
 jobs:
   build:
@@ -15,13 +15,6 @@ jobs:
       matrix:
         ubuntu_version: ["24.04"]
       fail-fast: false
-    # runs-on: self-hosted
-    # container:
-    #   image: ghcr.io/jgmelber/my-xdna-builder:latest
-    # strategy:
-    #   matrix:
-    #     ubuntu_version: ["24.04"]
-    #   fail-fast: false
 
     steps:
       - name: Checkout repository
